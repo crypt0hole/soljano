@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "768478599304",
+    "project_id": "bubbles-7ca67",
+    "storage_bucket": "bubbles-7ca67.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:768478599304:android:76f4f402fbe4d78b66e73d",
+        "android_client_info": {
+          "package_name": "com.solajan.tstore"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "768478599304-cri57g86uj2oo4m4clushasro7el9nbk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQwmvEHVNHNvFb-xF7fXWw4gc1a1dNn4U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "768478599304-cri57g86uj2oo4m4clushasro7el9nbk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

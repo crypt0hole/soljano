@@ -1,0 +1,116 @@
+// Firestore Security Rules - Al Solajan
+// تسمح للعملاء بإنشاء وقراءة طلبات السحب الخاصة بهم فقط، والإدمن يتحكم في كل شيء
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ✅ دوال المساعدة العامة
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function userExists() {
+      return exists(/databases/$(database)/documents/users/$(request.auth.uid));
+    }
+
+    function getUserData() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && userExists() && getUserData().role == 'admin';
+    }
+
+    function isSeller() {
+      return isAuthenticated() && userExists() && getUserData().role == 'seller';
+    }
+
+    function isCustomer() {
+      return isAuthenticated() && userExists() && getUserData().role == 'customer';
+    }
+
+    // ✅ الأقسام المختلفة
+
+    match /categories/{category} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /subcategories/{subcategoryId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /attributes/{attributeId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if isAdmin() || isSeller();
+    }
+
+    match /topSales/{productId} {
+      allow read: if true;
+      allow write: if isAdmin() || isSeller();
+    }
+
+    match /favorites/{favoriteId} {
+      allow read, write: if isAuthenticated();
+    }
+
+    match /coupons/{couponId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /configuration/{configId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /admin_activities/{activityId} {
+      allow read, write: if isAdmin();
+    }
+
+    // ✅ السحوبات (transactions)
+    match /transactions/{transactionId} {
+      // السماح للعميل بإنشاء طلب سحب
+      allow create: if isCustomer();
+
+      // السماح للعميل بقراءة طلباته فقط، والإدمن يقرأ كل شيء
+      allow read: if isAdmin() || (isCustomer() && resource.data.userId == request.auth.uid);
+
+      // السماح للإدمن فقط بالتعديل والحذف
+      allow update, delete: if isAdmin();
+    }
+
+    match /users/{userId} {
+      allow read, write: if isAdmin() || (isAuthenticated() && request.auth.uid == userId);
+    }
+
+    // ✅ الطلبات (Orders)
+    match /orders/{orderId} {
+      allow create: if isAuthenticated();
+
+      allow read: if isAdmin() || (
+        isAuthenticated() && (
+          resource.data.customerId == request.auth.uid ||
+          resource.data.sellerId == request.auth.uid
+        )
+      );
+
+      allow update: if isAdmin() || (
+        isSeller() && resource.data.sellerId == request.auth.uid
+      );
+
+      allow delete: if isAdmin();
+    }
+
+    // ⛔ افتراضي: رفض أي وصول غير مصرح به
+    match /{path=**} {
+      allow read, write: if false;
+    }
+  }
+} 

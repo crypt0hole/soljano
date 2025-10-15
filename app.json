@@ -1,29 +1,50 @@
 {
   "expo": {
-    "name": "soljano",
-    "slug": "soljano",
-    "version": "1.0.0",
+    "version": "2.0.8",
+    "name": "الصولجان",
+    "scheme": "alsolajan-app",
+    "description": "الصولجان منصة تتيح للأفراد عرض وبيع منتجاتهم عبر الإنترنت دون الحاجة لشرائها أو تخزينها. يكفي ملء نموذج طلب البيع واستلام الأرباح مباشرة من الفرق بين سعر الجملة وسعر البيع.",
+    "slug": "alsolajan-app",
+    "privacy": "public",
+    "androidStatusBar": {
+      "backgroundColor": "#FFFFFF"
+    },
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "newArchEnabled": true,
     "splash": {
       "image": "./assets/splash-icon.png",
-      "resizeMode": "contain",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.solajan.tstore",
+      "usesAppleSignIn": true
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "edgeToEdgeEnabled": true
+      "versionCode": 9,
+      "package": "com.solajan.tstore",
+      "permissions": ["INTERNET"],
+      "googleServicesFile": "./google-services.json"
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
+    "notification": {
+      "iosDisplayInForeground": true,
+      "color": "#D0AD8A",
+      "icon": "./assets/icon.png",
+      "androidMode": "default",
+      "androidCollapsedTitle": "الصولجان"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "0b40e789-4966-41e5-86c4-a1d7fe586e74"
+      }
     }
   }
 }
